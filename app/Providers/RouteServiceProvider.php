@@ -45,6 +45,16 @@ class RouteServiceProvider extends ServiceProvider
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });// for securty as to limt number of requests in on minute to be 60 request
+        RateLimiter::for('contact', function (Request $request) {
+            return Limit::perMinute(3)->by($request->user()?->id ?: $request->ip())->response(function(){
+                return apiResponse(429,'try after minute');
+            });
         });
+        // RateLimiter::for('login', function (Request $request) {
+        //     return Limit::perMinute(2)->by($request->user()?->id ?: $request->ip())->response(function(){
+        //         return apiResponse(429,'try after minute');
+        //     });
+        // }); we add this in login controller instead of adding to route login api 
     }
 }

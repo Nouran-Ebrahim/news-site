@@ -75,4 +75,4 @@ Route::get('settings', [GeneralController::class, 'getSettings']);
 Route::get('categories', [GeneralController::class, 'getCategories']);
 Route::get('categories/{slug}/posts', [GeneralController::class, 'getCategoryPosts']);
 
-Route::post('contacts/store', [GeneralController::class, 'storeContacts']);
+Route::post('contacts/store', [GeneralController::class, 'storeContacts'])->middleware('throttle:contact');
