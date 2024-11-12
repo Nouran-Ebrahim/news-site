@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum','CheckUserStatus'])->prefix('account')->group(function () {
+Route::middleware(['auth:sanctum','CheckUserStatus','CheckUserEmailVerifyApi'])->prefix('account')->group(function () {
     Route::get('/user', function (Request $request) {
         return new UserResource($request->user());
     });
@@ -51,7 +51,7 @@ Route::middleware(['auth:sanctum','CheckUserStatus'])->prefix('account')->group(
     Route::put('passwordUpdate', [SettingsController::class, 'passwordUpdate']);
     Route::put('settings', [SettingsController::class, 'updateSettings']);
 });
-Route::middleware('auth:sanctum')->prefix('posts')->group(function () {
+Route::middleware(['auth:sanctum','CheckUserStatus','CheckUserEmailVerifyApi'])->prefix('posts')->group(function () {
     Route::get('/index', [PostController::class, 'index']);
     Route::post('/store', [PostController::class, 'store']);
     Route::delete('/destroy/{id}', [PostController::class, 'destroy']);

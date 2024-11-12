@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\CheckAdminStatus;
 use App\Http\Middleware\CheckNotificationReadAt;
+use App\Http\Middleware\CheckUserEmailVerifyApi;
 use App\Http\Middleware\CheckUserStatus;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -45,7 +46,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class, // for session based authantication used when make spa single page app as the backend and front end in same domain and we need to use sanctum of api for front end like react and back end with laravel 
+            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class, // for session based authantication used when make spa single page app as the backend and front end in same domain and we need to use sanctum of api for front end like react and back end with laravel
             \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
@@ -70,6 +71,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'CheckUserStatus'=>CheckUserStatus::class, //apliad for spasifc routs
-        "CheckAdminStatus"=>CheckAdminStatus::class
+        "CheckAdminStatus"=>CheckAdminStatus::class,
+        "CheckUserEmailVerifyApi"=>CheckUserEmailVerifyApi::class
     ];
 }
