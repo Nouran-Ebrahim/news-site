@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Jobs\SendOtpTsk;
 use App\Models\User;
 use App\Notifications\SendOtpVirifyUserEmail;
 use App\Utilts\ImageManger;
@@ -38,8 +39,9 @@ class RegisterController extends Controller
             }
 
             $token = $user->createToken('auth_token', [], now()->addMinutes(60))->plainTextToken; // if we need to make the user go to profile direct without login
-
-            $user->notify(new SendOtpVirifyUserEmail('Email verification code.'));
+            // SendOtpTsk::dispatch($user); // this will save a job in the job table and not excute the job so we need to start the queue to ecxute the job and send the otp to the mailtrap (queue:work) then it will be removed from the jobs table
+            $user->notify(new SendOtpVirifyUserEmail('Email verification code.')); // other tasks no depend on this task so we can add it in the queu
+            // SendOtpTsk we can use the notficarion class that send the otp to make the queue job insted of the job class we need to add that notficaton implemets shouldqueue
             DB::commit();
             return apiResponse(201, 'user created', ['token' => $token]);
 
@@ -70,7 +72,8 @@ class RegisterController extends Controller
         return apiResponse(200, 'Email verified sucssfully');
 
     }
-    public function sendOtpAgain(){
+    public function sendOtpAgain()
+    {
         $user = auth()->user();
         $user->notify(new SendOtpVirifyUserEmail('Email verification code.'));
         return apiResponse(200, 'otp send again');

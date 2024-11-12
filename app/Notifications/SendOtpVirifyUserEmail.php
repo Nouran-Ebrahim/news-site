@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Ichtrojan\Otp\Otp;
 
-class SendOtpVirifyUserEmail extends Notification
+class SendOtpVirifyUserEmail extends Notification implements ShouldQueue
 {
     use Queueable;
 
