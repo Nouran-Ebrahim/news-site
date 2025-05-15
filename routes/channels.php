@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-//$user this is the auth user in guard web that will resive the notification
-    return (int) $user->id === (int) $id;
+//$user this is the auth user in guard web from browser session that will resive the notification
+    return (int) $user->id === (int) $id; //$id the auth id from laravel
 });
 Broadcast::channel('App.Models.Admin.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
